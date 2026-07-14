@@ -1,5 +1,5 @@
 import { Buffer } from "node:buffer";
-import { getAllowedRepos } from "./_allowed.js";
+import { isRepoAllowed } from "./_allowed.js";
 
 /**
  * CORS proxy for GitHub release asset downloads.
@@ -28,11 +28,13 @@ export default async function handler(req, res) {
       return;
     }
 
-    const allowedPrefixes = getAllowedRepos().map((repo) => `/${repo}/releases/download/`);
+    // Path must be /owner/repo/releases/download/...
+    const match = parsed.pathname.match(/^\/([\w.-]+)\/([\w.-]+)\/releases\/download\//);
     if (
       parsed.protocol !== "https:" ||
       parsed.hostname !== "github.com" ||
-      !allowedPrefixes.some((prefix) => parsed.pathname.toLowerCase().startsWith(prefix))
+      !match ||
+      !isRepoAllowed(`${match[1]}/${match[2]}`)
     ) {
       res.statusCode = 403;
       res.end("URL not allowed");

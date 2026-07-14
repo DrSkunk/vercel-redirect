@@ -1,5 +1,5 @@
 import { Buffer } from "node:buffer";
-import { getAllowedRepos } from "./_allowed.js";
+import { isRepoAllowed } from "./_allowed.js";
 
 /**
  * CORS proxy for GitHub releases listing.
@@ -11,9 +11,8 @@ export default async function handler(req, res) {
   try {
     const requestUrl = new URL(req.url ?? "", "http://localhost");
     const repo = requestUrl.searchParams.get("repo");
-    const allowed = getAllowedRepos();
 
-    if (!repo || !allowed.includes(repo.toLowerCase())) {
+    if (!repo || !isRepoAllowed(repo)) {
       res.statusCode = 403;
       res.end("Repo not allowed");
       return;

@@ -12,7 +12,7 @@ In your Vercel UI: Project → Settings → Environment Variables:
 |---|---|---|---|
 | `REDIRECT_TARGET` | yes | `https://fri3dcamp.github.io/fri3d-web-flasher` | Base URL, no trailing slash needed |
 | `REDIRECT_PERMANENT` | no | `false` | `false` = 307 (temporary), default 308 (permanent, cached by browsers) |
-| `ALLOWED_REPOS` | for proxy | `Fri3dCamp/badge_firmware_MicroPythonOS,Fri3dCamp/communicator_2026` | Comma-separated `owner/repo` allow-list for the CORS proxy |
+| `ALLOWED_REPOS` | for proxy | `Fri3dCamp/*` | Comma-separated `owner/repo` allow-list for CORS proxy. `owner/*` allows all repos of that owner |
 | `GITHUB_TOKEN` | no | `ghp_...` | Raises GitHub API rate limit for `/api/releases` |
 
 Redeploy after changing env vars.
